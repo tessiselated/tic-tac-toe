@@ -3,8 +3,8 @@
 // col-md-4 and board-box
 
 
-var boardDOMElement = document.getElementById("board")
-var resultDOMElement = document.getElementById("winner-text")
+var boardDOMElement = document.getElementById("board");
+var resultDOMElement = document.getElementById("winner-text");
 
 function createBoard() {
     for (i = 0; i < 3; i++) {
@@ -36,14 +36,14 @@ boardDOMElement.addEventListener("click", function() {
         event.target.classList.add("imperial", "in-play");
         event.target.classList.remove("empty");
         clickerCount++;
-    } else if (event.target.classList.contains("empty") && (clickerCount % 2 != 0) && gameState === true) {
+    } else if (event.target.classList.contains("empty") && (clickerCount % 2 !== 0) && gameState === true) {
         event.target.classList.add("alliance", "in-play");
         event.target.classList.remove("empty");
         clickerCount++;
     }
     checkGameState();
     printWinner();
-})
+});
 
 
 // winConditions is an array containing arrays of all possible win conditions
@@ -77,33 +77,36 @@ function checkGameState() {
         }
 
     }
-    // the following for loop checks if the ids of alliance blocks matches any of the winning combos
+    // the following for loop checks if the ids of alliance and imperial blocks matches any of the winning combos
     for (j = 0; j < winConditions.length; j++) {
         var didAllianceWin = winConditions[j].every(function(val) {
-            return allianceIds.indexOf(val) >= 0; });
-            if (didAllianceWin === true){
-                gameState = false;
-                gameWinner = "Alliance";
-            }
+            return allianceIds.indexOf(val) >= 0;
+        });
+        var didImperialsWin = winConditions[j].every(function(val) {
+            return imperialIds.indexOf(val) >= 0;
+        });
+
+        if (didAllianceWin === true) {
+            gameState = false;
+            gameWinner = "Alliance";
+        }
+
+        if (didImperialsWin === true) {
+            gameState = false;
+            gameWinner = "Imperials";
+        }
     }
+}
     // This for loop does the same thing for imperial blocks
     // This is a case of code repeating itself - could be refactored
-    for (k = 0; k < winConditions.length; k++) {
-        var didImperialsWin = winConditions[k].every(function(val) {
-            return imperialIds.indexOf(val) >= 0; });
-            if (didImperialsWin === true) {
-                gameState = false;
-                gameWinner = "Imperials";
-            }
 
+
+
+
+    function printWinner() {
+        if (gameState === false && gameWinner !== undefined) {
+            resultDOMElement.innerText = "The winner is " + gameWinner;
+        } else if (gameState === false) {
+            resultDOMElement.innerText = "It's a draw";
+        }
     }
-
-}
-
-function printWinner () {
-    if (gameState === false && gameWinner != undefined) {
-        resultDOMElement.innerText = "The winner is " + gameWinner;
-    } else if (gameState === false) {
-        resultDOMElement.innerText = "It's a draw"
-    }
-}
