@@ -22,3 +22,7 @@
  - Create Board
  - Check Win
  - Turn function?
+ - I also need to be able to check for a draw
+
+### Let's think about click events
+-

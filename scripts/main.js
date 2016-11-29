@@ -4,6 +4,7 @@
 
 
 var boardDOMElement = document.getElementById("board")
+var resultDOMElement = document.getElementById("winner-text")
 
 function createBoard() {
     for (i = 0; i < 3; i++) {
@@ -26,34 +27,26 @@ createBoard();
 // Click event should change class of box clicked on - but only if class is empty
 
 var clickerCount = 0;
+var gameState = true;
+var gameWinner;
 
 
 boardDOMElement.addEventListener("click", function() {
-    if (event.target.classList.contains("empty") && (clickerCount % 2 === 0)) {
+    if (event.target.classList.contains("empty") && (clickerCount % 2 === 0) && gameState === true) {
         event.target.classList.add("imperial", "in-play");
         event.target.classList.remove("empty");
         clickerCount++;
-    } else if (event.target.classList.contains("empty") && (clickerCount % 2 != 0)) {
+    } else if (event.target.classList.contains("empty") && (clickerCount % 2 != 0) && gameState === true) {
         event.target.classList.add("alliance", "in-play");
         event.target.classList.remove("empty");
         clickerCount++;
     }
-    checkWinner();
-    console.log(gameWinner);
+    checkGameState();
+    printWinner();
 })
 
 
-// After each click the game should check if someone wins
-// I need to write logic to check for this
-// I need a way to identify all elements in a row, column or diagonal
-
-
-// a row is position 00 position 01 and position 02
-// or position 10 position 11 and position 12
-// or position 20 position 21 and position 22
-
-var gameState = true;
-var gameWinner
+// winConditions is an array containing arrays of all possible win conditions
 
 var winConditions = [
     ["position00", "position01", "position02"],
@@ -68,19 +61,23 @@ var winConditions = [
 
 
 
-function checkWinner() {
+function checkGameState() {
     var inPlay = document.getElementsByClassName("in-play"); //returns an object of all clicked elements
+    if (inPlay.length === 9) {
+        gameState = false;
+    }
     var allianceIds = [];
     var imperialIds = [];
     for (i = 0; i < inPlay.length; i++) {
         if (inPlay[i].classList.contains("alliance")) {
-            allianceIds.push(inPlay[i].id);
+            allianceIds.push(inPlay[i].id); //pushes the ids (ie the position) of all alliance blocks to an array
 
         } else if (inPlay[i].classList.contains("imperial")) {
-            imperialIds.push(inPlay[i].id);
+            imperialIds.push(inPlay[i].id); //pushes the ids (ie the position) of all imperial blocks to an array
         }
 
     }
+    // the following for loop checks if the ids of alliance blocks matches any of the winning combos
     for (j = 0; j < winConditions.length; j++) {
         var didAllianceWin = winConditions[j].every(function(val) {
             return allianceIds.indexOf(val) >= 0; });
@@ -89,6 +86,8 @@ function checkWinner() {
                 gameWinner = "Alliance";
             }
     }
+    // This for loop does the same thing for imperial blocks
+    // This is a case of code repeating itself - could be refactored
     for (k = 0; k < winConditions.length; k++) {
         var didImperialsWin = winConditions[k].every(function(val) {
             return imperialIds.indexOf(val) >= 0; });
@@ -99,4 +98,12 @@ function checkWinner() {
 
     }
 
+}
+
+function printWinner () {
+    if (gameState === false && gameWinner != undefined) {
+        resultDOMElement.innerText = "The winner is " + gameWinner;
+    } else if (gameState === false) {
+        resultDOMElement.innerText = "It's a draw"
+    }
 }
