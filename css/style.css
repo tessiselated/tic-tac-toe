@@ -1,0 +1,6 @@
+div.board-box {
+  border-style: solid;
+  border-color: black;
+  height: 300px;
+  width: 300px;
+}
