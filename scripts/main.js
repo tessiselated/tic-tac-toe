@@ -11,7 +11,7 @@ function createBoard() {
         boardRow.classList.add("row");
         for (j = 0; j < 3; j++) {
           var boardBox = document.createElement("div");
-          boardBox.classList.add("col-md-4", "board-box");
+          boardBox.classList.add("col-md-4", "board-box", "empty");
           boardRow.appendChild(boardBox);
 
         }
@@ -20,3 +20,21 @@ function createBoard() {
 }
 
 createBoard();
+
+// Create an event listener that changes the class of the box on click
+// Click event should change class of box clicked on - but only if class is empty
+
+var clickerCount = 0;
+
+
+boardDOMElement.addEventListener("click", function() {
+    if (event.target.classList.contains("empty") && (clickerCount % 2 === 0)) {
+        event.target.classList.add("imperial");
+        event.target.classList.remove("empty");
+        clickerCount++;
+    } else if (event.target.classList.contains("empty") && (clickerCount % 2 != 0)) {
+        event.target.classList.add("alliance");
+        event.target.classList.remove("empty");
+        clickerCount++;
+    }
+})
