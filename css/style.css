@@ -4,3 +4,13 @@ div.board-box {
   height: 100px;
   width: 100px;
 }
+
+div.imperial {
+  background: url(../images/imperialseal.jpg);
+  background-size: contain;
+}
+
+div.alliance {
+  background: url(../images/first-order.png);
+  background-size: contain;
+}
