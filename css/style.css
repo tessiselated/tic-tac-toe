@@ -14,3 +14,7 @@ div.alliance {
   background: url(../images/first-order.png);
   background-size: contain;
 }
+
+.result-area h3 {
+  color: red;
+}

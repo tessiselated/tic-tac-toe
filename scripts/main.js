@@ -5,10 +5,12 @@
 
 var boardDOMElement = document.getElementById("board");
 var resultDOMElement = document.getElementById("winner-text");
+var resetDOMElement = document.getElementById("reset-game");
 
 function createBoard() {
     boardDOMElement.innerHTML = "";
     resultDOMElement.innerHTML = "";
+    resetDOMElement.classList.add("hidden");
     clickerCount = 0;
     gameState = true;
     gameWinner = undefined;
@@ -47,7 +49,9 @@ boardDOMElement.addEventListener("click", function() {
         clickerCount++;
     }
     checkGameState();
-    printWinner();
+    if (gameState === false) {
+        printWinner();
+    }
 });
 
 
@@ -102,16 +106,20 @@ function checkGameState() {
         }
     }
 }
-    // This for loop does the same thing for imperial blocks
-    // This is a case of code repeating itself - could be refactored
 
 
 
 
-    function printWinner() {
-        if (gameState === false && gameWinner !== undefined) {
-            resultDOMElement.innerText = "The winner is " + gameWinner;
-        } else if (gameState === false) {
-            resultDOMElement.innerText = "It's a draw";
-        }
+
+function printWinner() {
+    if (gameWinner !== undefined) {
+        resultDOMElement.innerText = "The winner is " + gameWinner;
+
+    } else {
+        resultDOMElement.innerText = "It's a draw";
     }
+    resetDOMElement.classList.remove("hidden");
+
+}
+
+resetDOMElement.addEventListener("click", createBoard);
