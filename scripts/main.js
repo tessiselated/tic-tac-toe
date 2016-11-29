@@ -7,6 +7,11 @@ var boardDOMElement = document.getElementById("board");
 var resultDOMElement = document.getElementById("winner-text");
 
 function createBoard() {
+    boardDOMElement.innerHTML = "";
+    resultDOMElement.innerHTML = "";
+    clickerCount = 0;
+    gameState = true;
+    gameWinner = undefined;
     for (i = 0; i < 3; i++) {
         var boardRow = document.createElement("div");
         boardRow.classList.add("row");
