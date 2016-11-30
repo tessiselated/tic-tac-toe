@@ -56,4 +56,5 @@ div.result-area {
 .result-area h3 {
   font-size: 2em;
   color: #d8cd00;
+  cursor: pointer;
 }
